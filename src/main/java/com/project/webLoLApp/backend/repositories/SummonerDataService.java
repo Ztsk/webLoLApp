@@ -49,14 +49,10 @@ public class SummonerDataService {
 
     @PostConstruct
     public void testData(){
-        Orianna.setRiotAPIKey("RGAPI-b4bc7a0b-a0ca-43b9-91d7-53326bde88fe");
+        Orianna.setRiotAPIKey("RGAPI-78bd96cb-ddc9-4cf8-8e46-e166ea123ff1");
         Orianna.setDefaultPlatform(Platform.EUROPE_WEST);
         if(summonerDataRepository.count() == 0) {
             summonerDataRepository.save(new SummonerData(Orianna.summonerNamed("ˉZSK").get()));
-            summonerDataRepository.save(new SummonerData(Orianna.summonerNamed("Major BlazeIt").get()));
-            summonerDataRepository.save(new SummonerData(Orianna.summonerNamed("xAvazar").get()));
-            summonerDataRepository.save(new SummonerData(Orianna.summonerNamed("Krzyśˇ").get()));
-            summonerDataRepository.save(new SummonerData(Orianna.summonerNamed("Bambo015").get()));
         }
     }
 

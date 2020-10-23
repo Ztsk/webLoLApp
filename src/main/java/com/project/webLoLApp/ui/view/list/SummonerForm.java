@@ -1,4 +1,4 @@
-package com.project.webLoLApp.ui;
+package com.project.webLoLApp.ui.view.list;
 
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
@@ -30,7 +30,7 @@ public class SummonerForm extends FormLayout {
     private Button close = new Button("Cancel");
 
     public SummonerForm(List<Platform> platforms){
-        Orianna.setRiotAPIKey("RGAPI-b4bc7a0b-a0ca-43b9-91d7-53326bde88fe");
+        Orianna.setRiotAPIKey("RGAPI-78bd96cb-ddc9-4cf8-8e46-e166ea123ff1");
         Orianna.setDefaultPlatform(Platform.EUROPE_WEST);
         addClassName("summoner-form");
         binder.bindInstanceFields(this);

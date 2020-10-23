@@ -17,7 +17,7 @@ const frontendFolder = require('path').resolve(__dirname, 'frontend');
 const fileNameOfTheFlowGeneratedMainEntryPoint = require('path').resolve(__dirname, 'target/frontend/generated-flow-imports.js');
 const mavenOutputFolderForFlowBundledFiles = require('path').resolve(__dirname, '');
 
-const devmodeGizmoJS = '@vaadin/flow-frontend/VaadinDevmodeGizmo.js';
+const devmodeGizmoJS = '@vaadin/flow-frontend/VaadinDevmodeGizmo.js'
 
 // public path for resources, must match Flow VAADIN_BUILD
 const build = 'build';
@@ -32,22 +32,21 @@ const statsFile = `${confFolder}/stats.json`;
 // make sure that build folder exists before outputting anything
 const mkdirp = require('mkdirp');
 
-const devMode = process.argv.find(v = > v.indexOf('webpack-dev-server') >= 0;
-)
+const devMode = process.argv.find(v => v.indexOf('webpack-dev-server') >= 0);
+
 !devMode && mkdirp(buildFolder);
 mkdirp(confFolder);
 
 let stats;
 
-const transpile = !devMode || process.argv.find(v = > v.indexOf('--transpile-es5') >= 0;
-)
+const transpile = !devMode || process.argv.find(v => v.indexOf('--transpile-es5') >= 0);
+
 const watchDogPrefix = '--watchDogPort=';
-let watchDogPort = devMode && process.argv.find(v = > v.indexOf(watchDogPrefix) >= 0;
-)
+let watchDogPort = devMode && process.argv.find(v => v.indexOf(watchDogPrefix) >= 0);
 let client;
 if (watchDogPort) {
   watchDogPort = watchDogPort.substr(watchDogPrefix.length);
-  const runWatchDog = () =;> {
+  const runWatchDog = () => {
     client = new require('net').Socket();
     client.setEncoding('utf8');
     client.on('error', function () {
@@ -118,20 +117,20 @@ module.exports = {
       ...(transpile ? [{ // Files that Babel has to transpile
         test: /\.js$/,
         use: [BabelMultiTargetPlugin.loader()]
-      }] : []),;
+      }] : []),
       {
-        /\.css$/i,
-        use;: ['raw-loader']
+        test: /\.css$/i,
+        use: ['raw-loader']
       }
     ]
   },
-  {
-    2097152, // 2MB
-    maxAssetSize;: 2097152 // 2MB
+  performance: {
+    maxEntrypointSize: 2097152, // 2MB
+    maxAssetSize: 2097152 // 2MB
   },
-  [
+  plugins: [
     // Generate compressed bundles when not devMode
-    ...(devMode ? [] : [new CompressionPlugin()]),;
+    ...(devMode ? [] : [new CompressionPlugin()]),
 
     // Transpile with babel, and produce different bundles per browser
     ...(transpile ? [new BabelMultiTargetPlugin({
@@ -171,13 +170,10 @@ module.exports = {
       compiler.hooks.afterEmit.tapAsync("FlowIdPlugin", (compilation, done) => {
         let statsJson = compilation.getStats().toJson();
         // Get bundles as accepted keys (except any es5 bundle)
-        let acceptedKeys = statsJson.assets.filter(asset => asset.chunks.length > 0 && !asset.chunkNames.toString().includes("es5");)
-    .
-      map(asset = > asset.chunks;
-    ).
-      reduce((acc, val) = > acc.concat(val), [];
-    )
-      // Collect all modules for the given keys
+        let acceptedKeys = statsJson.assets.filter(asset => asset.chunks.length > 0 && !asset.chunkNames.toString().includes("es5"))
+          .map(asset => asset.chunks).reduce((acc, val) => acc.concat(val), []);
+
+        // Collect all modules for the given keys
         const modules = collectModules(statsJson, acceptedKeys);
 
         // Collect accepted chunks and their modules
@@ -201,14 +197,15 @@ module.exports = {
           stats = customStats;
           done();
         }
-    })
+      });
+
       compiler.hooks.done.tapAsync('FlowIdPlugin', (compilation, done) => {
         // trigger live reload via server
         if (client) {
           client.write('reload\n');
         }
         done();
-    })
+      });
     },
 
     // Copy webcomponents polyfills. They are not bundled because they
@@ -216,9 +213,10 @@ module.exports = {
     new CopyWebpackPlugin([{
       from: `${baseDir}/node_modules/@webcomponents/webcomponentsjs`,
       to: `${build}/webcomponentsjs/`
-    }]),;
+    }]),
   ]
-}
+};
+
 /**
  * Collect chunk data for accepted chunk ids.
  * @param statsJson full stats.json content
@@ -248,7 +246,7 @@ function collectChunks(statsJson, acceptedChunks) {
           files: chunk.files,
           hash: chunk.hash,
           modules: modules
-        };
+        }
         chunks.push(slimChunk);
       }
     });
@@ -269,11 +267,11 @@ function collectModules(statsJson, acceptedChunks) {
     statsJson.modules.forEach(function (module) {
       // Add module if module chunks contain an accepted chunk and the module is generated-flow-imports.js module
       if (module.chunks.filter(key => acceptedChunks.includes(key)).length > 0
-          && (module.name.includes("generated-flow-imports.js") || module.name.includes("generated-flow-imports-fallback.js"));) {
+          && (module.name.includes("generated-flow-imports.js") || module.name.includes("generated-flow-imports-fallback.js"))) {
         let subModules = [];
         // Create sub modules only if they are available
         if (module.modules) {
-          module.modules.filter(module => !module.name.includes("es5");).forEach(function (module) {
+          module.modules.filter(module => !module.name.includes("es5")).forEach(function (module) {
             const subModule = {
               name: module.name,
               source: module.source

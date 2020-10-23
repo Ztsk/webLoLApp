@@ -27,11 +27,13 @@ public class SummonerData {
     private double winratio;
     private int leaguePoints;
     private int games;
+    private int iconID;
 
     public SummonerData() {
     }
 
     public SummonerData(Summoner summoner) {
+        iconID = summoner.getProfileIcon().getId();
         LeagueEntry le = summoner.getLeaguePosition(Queue.RANKED_SOLO);
         this.name = summoner.getName();
         this.level = summoner.getLevel();
@@ -159,6 +161,14 @@ public class SummonerData {
         this.leaguePoints = leaguePoints;
     }
 
+    public int getIconID() {
+        return iconID;
+    }
+
+    public void setIconID(int iconID) {
+        this.iconID = iconID;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -187,8 +197,9 @@ public class SummonerData {
                 ", wins=" + wins +
                 ", loses=" + loses +
                 ", winratio=" + winratio +
-                ", lp=" + leaguePoints +
+                ", leaguePoints=" + leaguePoints +
                 ", games=" + games +
+                ", iconID=" + iconID +
                 '}';
     }
 }

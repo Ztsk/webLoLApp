@@ -1,26 +1,30 @@
-package com.project.webLoLApp.ui;
+package com.project.webLoLApp.ui.view.list;
 
 import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.project.webLoLApp.backend.SummonerData;
 import com.project.webLoLApp.backend.repositories.SummonerDataService;
+import com.project.webLoLApp.ui.MainLayout;
+import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@Route("")
-@CssImport("./shared-styles.css")
+@Route(value="saved", layout = MainLayout.class)
+@PageTitle("Summoner Data Set")
 public class ListView extends VerticalLayout {
 
         private SummonerDataService summonerDataService;
@@ -32,6 +36,8 @@ public class ListView extends VerticalLayout {
                 this.summonerDataService = summonerDataService;
                 addClassName("list-view");
                 setSizeFull();
+
+                summonerDataService.save(ComponentUtil.getData(UI.getCurrent(),SummonerData.class));
 
                 configureGrid();
 
@@ -67,8 +73,14 @@ public class ListView extends VerticalLayout {
                 deleteButton.addClickShortcut(Key.DELETE);
                 deleteButton.addClickListener(click -> deleteSummoner(grid.asSingleSelect().getValue()));
 
+                Button detailsButton = new Button("Details of selected");
+                detailsButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+                detailsButton.addClickListener(click -> {
+                        ComponentUtil.setData(UI.getCurrent(), SummonerData.class, grid.asSingleSelect().getValue());
+                        new Anchor("");
+                });
                 HorizontalLayout toolbar = new HorizontalLayout(
-                        addSummonerButton, refreshButton, deleteButton, filterText);
+                        addSummonerButton, refreshButton, deleteButton, filterText, detailsButton);
                 toolbar.addClassName("toolbar");
                 return toolbar;
         }
@@ -100,7 +112,8 @@ public class ListView extends VerticalLayout {
         private void configureGrid(){
                 grid.addClassName("summoner-grid");
                 grid.setSizeFull();
-                grid.setColumns("name", "platform", "level", "rank", "tier", "lp", "games", "wins", "loses", "winratio");
+                grid.setColumns("name", "platform", "level", "rank",
+                        "tier", "leaguePoints", "games", "wins", "loses", "winratio");
                 grid.getColumns().forEach(col -> col.setAutoWidth(true));
         }
 
