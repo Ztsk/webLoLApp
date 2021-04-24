@@ -1,12 +1,16 @@
 package com.project.webLoLApp.backend;
 
+import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.merakianalytics.orianna.types.common.Queue;
 import com.merakianalytics.orianna.types.core.league.LeagueEntry;
 import com.merakianalytics.orianna.types.core.summoner.Summoner;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Entity
@@ -28,6 +32,11 @@ public class SummonerData {
     private int leaguePoints;
     private int games;
     private int iconID;
+    private String lastUpdated;
+    @Embedded
+    private SummonerMasteries summonerMasteries;
+    @Embedded
+    private SummonerMatchHistory summonerMatchHistory;
 
     public SummonerData() {
     }
@@ -49,6 +58,32 @@ public class SummonerData {
         this.rank = le.getTier().toString();
         this.tier = le.getDivision().toString();
         this.leaguePoints = le.getLeaguePoints();
+        this.summonerMasteries = new SummonerMasteries(summoner);
+        this.summonerMatchHistory = new SummonerMatchHistory(summoner);
+        this.lastUpdated = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+    }
+
+    public void updateSummonerData(){
+        Summoner summoner = Orianna.summonerNamed(name).withPlatform(platform).get();
+        iconID = summoner.getProfileIcon().getId();
+        LeagueEntry le = summoner.getLeaguePosition(Queue.RANKED_SOLO);
+        this.name = summoner.getName();
+        this.level = summoner.getLevel();
+        this.platform = summoner.getPlatform();
+        this.puuid = summoner.getPuuid();
+        this.accountId = summoner.getAccountId();
+        this.id = summoner.getId();
+        this.updated = summoner.getUpdated().toString();
+        this.wins = le.getWins();
+        this.loses = le.getLosses();
+        this.games = this.wins + this.loses;
+        this.winratio = Math.round(((this.wins * 1.0 /(this.loses + this.wins))*100.0)*100.0)/100.0;
+        this.rank = le.getTier().toString();
+        this.tier = le.getDivision().toString();
+        this.leaguePoints = le.getLeaguePoints();
+        this.summonerMasteries = new SummonerMasteries(summoner);
+        this.summonerMatchHistory = new SummonerMatchHistory(summoner);
+        this.lastUpdated = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
     }
 
     public int getGames() {
@@ -161,12 +196,30 @@ public class SummonerData {
         this.leaguePoints = leaguePoints;
     }
 
-    public int getIconID() {
-        return iconID;
+    public SummonerMasteries getSummonerMasteries(){ return summonerMasteries; }
+
+    public int getIconID() { return iconID; }
+
+    public void setIconID(int iconID) { this.iconID = iconID; }
+
+    public String getLastUpdated() {
+        return lastUpdated;
     }
 
-    public void setIconID(int iconID) {
-        this.iconID = iconID;
+    public void setLastUpdated(String lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public void setSummonerMasteries(SummonerMasteries summonerMasteries) {
+        this.summonerMasteries = summonerMasteries;
+    }
+
+    public SummonerMatchHistory getSummonerMatchHistory() {
+        return summonerMatchHistory;
+    }
+
+    public void setSummonerMatchHistory(SummonerMatchHistory summonerMatchHistory) {
+        this.summonerMatchHistory = summonerMatchHistory;
     }
 
     @Override
@@ -202,4 +255,5 @@ public class SummonerData {
                 ", iconID=" + iconID +
                 '}';
     }
+
 }

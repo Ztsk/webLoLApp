@@ -1,0 +1,11 @@
+:host {
+    padding-left: 0.5rem;
+}
+
+:host([selected]) {
+    background-color: rgba(0,0,0,0.1);
+}
+
+:host::before {
+    display: none !important;
+}

@@ -19,6 +19,8 @@ import com.vaadin.flow.shared.Registration;
 
 import java.util.List;
 
+import static com.project.webLoLApp.WebLoLAppApplication.ApiKey;
+
 public class SummonerForm extends FormLayout {
 
     private SummonerData summonerData;
@@ -30,7 +32,7 @@ public class SummonerForm extends FormLayout {
     private Button close = new Button("Cancel");
 
     public SummonerForm(List<Platform> platforms){
-        Orianna.setRiotAPIKey("RGAPI-78bd96cb-ddc9-4cf8-8e46-e166ea123ff1");
+        Orianna.setRiotAPIKey(ApiKey);
         Orianna.setDefaultPlatform(Platform.EUROPE_WEST);
         addClassName("summoner-form");
         binder.bindInstanceFields(this);

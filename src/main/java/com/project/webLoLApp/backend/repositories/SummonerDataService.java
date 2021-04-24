@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static com.project.webLoLApp.WebLoLAppApplication.ApiKey;
+
 @Service
 public class SummonerDataService {
     private static final Logger LOGGER = Logger.getLogger(SummonerDataService.class.getName());
@@ -17,6 +19,7 @@ public class SummonerDataService {
 
     public SummonerDataService(SummonerDataRepository summonerDataRepository){
         this.summonerDataRepository = summonerDataRepository;
+
     }
 
     public List<SummonerData> findAll(){
@@ -24,11 +27,7 @@ public class SummonerDataService {
     }
 
     public List<SummonerData> findAll(String stringFilter) {
-        if (stringFilter == null || stringFilter.isEmpty()) {
-            return summonerDataRepository.findAll();
-        } else {
             return summonerDataRepository.search(stringFilter);
-        }
     }
 
     public long count() {
@@ -49,11 +48,12 @@ public class SummonerDataService {
 
     @PostConstruct
     public void testData(){
-        Orianna.setRiotAPIKey("RGAPI-78bd96cb-ddc9-4cf8-8e46-e166ea123ff1");
+        Orianna.setRiotAPIKey(ApiKey);
         Orianna.setDefaultPlatform(Platform.EUROPE_WEST);
         if(summonerDataRepository.count() == 0) {
             summonerDataRepository.save(new SummonerData(Orianna.summonerNamed("ˉZSK").get()));
         }
+
     }
 
 }

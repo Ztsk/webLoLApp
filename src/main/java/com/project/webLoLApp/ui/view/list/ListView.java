@@ -1,17 +1,14 @@
 package com.project.webLoLApp.ui.view.list;
 
-import com.merakianalytics.orianna.Orianna;
 import com.merakianalytics.orianna.types.common.Platform;
 import com.project.webLoLApp.backend.SummonerData;
 import com.project.webLoLApp.backend.repositories.SummonerDataService;
 import com.project.webLoLApp.ui.MainLayout;
-import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -36,8 +33,7 @@ public class ListView extends VerticalLayout {
                 this.summonerDataService = summonerDataService;
                 addClassName("list-view");
                 setSizeFull();
-
-                summonerDataService.save(ComponentUtil.getData(UI.getCurrent(),SummonerData.class));
+                setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
                 configureGrid();
 
@@ -59,37 +55,23 @@ public class ListView extends VerticalLayout {
                 filterText.setClearButtonVisible(true);
                 filterText.setValueChangeMode(ValueChangeMode.LAZY);
                 filterText.addValueChangeListener(e -> updateList());
+                filterText.getElement().getStyle().set("border-radius", "5px");
 
                 Button addSummonerButton = new Button("Add Summoner");
                 addSummonerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
                 addSummonerButton.addClickListener(click -> addSummoner());
                 addSummonerButton.addClickShortcut(Key.ENTER);
 
-                Button refreshButton = new Button("Refresh");
-                refreshButton.addClickListener(click -> refreshSummoners());
-
                 Button deleteButton = new Button("Delete");
-                deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
+                deleteButton.getElement().getStyle().set("background-color", "red");
+                deleteButton.getElement().getStyle().set("color", "white");
                 deleteButton.addClickShortcut(Key.DELETE);
                 deleteButton.addClickListener(click -> deleteSummoner(grid.asSingleSelect().getValue()));
 
-                Button detailsButton = new Button("Details of selected");
-                detailsButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-                detailsButton.addClickListener(click -> {
-                        ComponentUtil.setData(UI.getCurrent(), SummonerData.class, grid.asSingleSelect().getValue());
-                        new Anchor("");
-                });
                 HorizontalLayout toolbar = new HorizontalLayout(
-                        addSummonerButton, refreshButton, deleteButton, filterText, detailsButton);
+                        addSummonerButton, deleteButton, filterText);
                 toolbar.addClassName("toolbar");
                 return toolbar;
-        }
-
-        private void refreshSummoners(){
-                for(SummonerData s : summonerDataService.findAll()){
-                        s = new SummonerData(Orianna.summonerNamed(s.getName()).withPlatform(s.getPlatform()).get());
-                }
-                updateList();
         }
 
         private void addSummoner(){
@@ -114,6 +96,14 @@ public class ListView extends VerticalLayout {
                 grid.setSizeFull();
                 grid.setColumns("name", "platform", "level", "rank",
                         "tier", "leaguePoints", "games", "wins", "loses", "winratio");
+                grid.addComponentColumn(summoner -> {
+                        Button button = new Button("details");
+                        button.addClickListener(click -> {
+                                UI.getCurrent().navigate("results/" + summoner.getName());
+                        });
+                        button.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+                        return button;
+                });
                 grid.getColumns().forEach(col -> col.setAutoWidth(true));
         }
 

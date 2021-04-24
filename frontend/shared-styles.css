@@ -1,4 +1,10 @@
 /* List view */
+.list-view {
+    padding-left: 10%;
+    padding-right: 10%;
+    background-color: #344274;
+}
+
 .list-view .content {
     display: flex;
 }
@@ -20,6 +26,14 @@
 }
 
 /* Main layout*/
+H5 {
+    color: aqua;
+}
+
+p {
+    font-size: 14px;
+}
+
 a[highlight] {
     font-weight: bold;
     text-decoration: underline;
@@ -27,28 +41,217 @@ a[highlight] {
 
 .header {
     padding: 0 var(--lumo-space-m);
+    background-color: #000037;
 }
 
 .header h1.title {
     font-size: 1em;
     margin: var(--lumo-space-m);
+    color: white;
 }
+
+.searchviewbutton {
+    background-color: #4b4b4b;
+    color: white;
+    border: 1px solid white;
+}
+
+.listviewbutton {
+    background-color: #4b4b4b;
+    color: white;
+    border: 1px solid white;
+}
+
 
 .search-view {
     font-weight: bold;
+    padding: 18%;
+    background-image: url("lol.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
+.search-menu {
+    background-color:  #344274;
+    padding: 8px;
+    border: 1px solid white;
+    border-radius: 10px;
+}
+
+.search-button {
+    background-color: #4b4b4b;
+    color: white;
+    border: 1px solid white;
+}
+
+/*Search Results*/
 .search-results {
     font-weight: bold;
+    padding: 8%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 .results-icon {
-    height: 100px;
-    width: 100px;
+    height: 150px;
+    width: 150px;
+    padding: 10px;
 }
 
 .ranked-image {
+    padding: 0;
     height: 150px;
     width: 150px;
+    margin-top: 0;
 }
+
+.summoner-stats {
+    border: 1px solid black;
+    background-color: rgba(101, 166, 255, 0.91);
+}
+
+.update-button, .show-more-button{
+    background-color: rgba(11, 224, 255, 0.75);
+    color: black;
+}
+
+.champ-image {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    align-self: center;
+    padding-left: 12px;
+    padding-right: 12px;
+
+}
+
+.champion-masteries {
+    padding: 0;
+    border-left: 1px solid black;
+    font-size: 15px;
+    background-color: rgba(101, 166, 255, 0.8);
+}
+
+.matchHistory-layout {
+    background-color: rgba(123, 123, 255, 0.8);
+    padding: 0;
+    border: 1px solid black;
+    border-top: 0px;
+    font-size: 14px;
+    text-wrap: none;
+}
+
+.champ-content{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding-left: 0;
+}
+
+.single-match-layoutV{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    background-color: rgba(11, 224, 255, 0.35);
+    text-wrap: none;
+}
+
+.single-match-layoutD{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    background-color: rgba(255, 69, 76, 0.75);
+    text-wrap: none;
+}
+
+.summ-spell-img1 {
+    height: 23px;
+    width: 23px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.summ-spell-img2 {
+    height: 23px;
+    width: 23px;
+    border: 1px solid black;
+    border-radius: 5px;
+
+}
+
+.primary-rune-img {
+    height: 23px;
+    width: 23px;
+    border: 1px solid black;
+    background-color: lightgray;
+    border-radius:50%;
+}
+
+.secondary-rune-img{
+    height: 23px;
+    width: 23px;
+    border: 1px solid black;
+    background-color: lightgray;
+    border-radius:50%;
+}
+.champion-img {
+    height: 60px;
+    width: 60px;
+    border-radius:50%;
+    border: 1px solid black;
+}
+
+match-champion-image-name-layout H5{
+    color: gold;
+}
+
+.item-img {
+    height: 40px;
+    width: 40px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.items-layout {
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+H6{
+    color: gold;
+}
+
+.item-rows{
+    padding-right: 0;
+}
+
+.item-holder {
+    height: 40px;
+    width: 40px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+
+.player-champ-img {
+    height: 25px;
+    width: 25px;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+.item-tooltip, .summSpellTooltip1, .summSpellTooltip2, .rune1ToolTip , .rune2ToolTip {
+    max-width: 25%;
+}
+
+
 
